@@ -7,8 +7,6 @@ import plotly.express as px
 import joblib
 import math
 
-# import statsmodels.tsa.arima.model.ARIMA
-# import statsmodels.api as sm
 from statsmodels.tsa.arima_model import ARIMA
 from sklearn.metrics import mean_absolute_percentage_error, mean_squared_error,mean_absolute_error
 
@@ -28,10 +26,10 @@ st.set_page_config(page_title="LSTM vs ARIMA", layout='wide')
 st.title("Crude Oil Benchmark Stock Price Prediction LSTM and ARIMA Models")
 st.subheader("""© Castillon, Ignas, Wong""")
 
-# # ARIMA PARAMETERS
-# pValue = 4
-# dValue = 1
-# qValue = 0
+# ARIMA PARAMETERS
+pValue = 4
+dValue = 1
+qValue = 0
 
 
 # sidebar
@@ -41,13 +39,13 @@ with st.sidebar.header('Set Data Split'):
     trainData = st.sidebar.slider('Data split ratio (% for Training Set)', 10, 90, 80,5)
     # st.write(trainData*.01)
     accuracy = st.sidebar.select_slider('Performance measure (accuracy Metrics)', options=['both','mse', 'mape'])
-    # #ARIMA PARAMETERS
-    # pValue = st.sidebar.number_input('P-value:',0,100,pValue)
-    # st.sidebar.write('The current p-Value is ', pValue)
-    # dValue = st.sidebar.number_input('D-value:',0,100,dValue)
-    # st.sidebar.write('The current d-Value is ', dValue)
-    # qValue = st.sidebar.number_input('Q-value:',0,100,qValue)
-    # st.sidebar.write('The current q-Value is ', qValue)
+    #ARIMA PARAMETERS
+    pValue = st.sidebar.number_input('P-value:',0,100,pValue)
+    st.sidebar.write('The current p-Value is ', pValue)
+    dValue = st.sidebar.number_input('D-value:',0,100,dValue)
+    st.sidebar.write('The current d-Value is ', dValue)
+    qValue = st.sidebar.number_input('Q-value:',0,100,qValue)
+    st.sidebar.write('The current q-Value is ', qValue)
     
   
     
@@ -135,158 +133,154 @@ def evaluate_lstm_model(split):
   # test predictions
   test_predictions = model.predict(X_test1).flatten()
   test_results = pd.DataFrame(
-      data={'Date': date_test, 'Close Prices': y_test1, 'Test Predictions': test_predictions})
+      data={'Date': date_test, 'Close Prices': y_test1, 'LSTM Predictions': test_predictions})
   # test_results
 
   # evaluate model
   mse = mse_eval(test_results['Close Prices'],
-                 test_results['Test Predictions'])
+                 test_results['LSTM Predictions'])
   mape = mape_eval(test_results['Close Prices'],
-                   test_results['Test Predictions'])
+                   test_results['LSTM Predictions'])
   print(mse)
   print(mape)
-  # save to csv
-  # csv file
-  current_name_model = str('LSTM_'+str(split*100))
-  predict = '/home/janna/1thesis/testingthesis/CSVPREDICTIONS_' + \
-      current_name_model + '.csv'
-  test_results.to_csv(predict, float_format='%.2f')
+  # # save to csv
+  # # csv file
+  # current_name_model = str('LSTM_'+str(split*100))
+  # predict = '/home/janna/1thesis/testingthesis/CSVPREDICTIONS_' + \
+  #     current_name_model + '.csv'
+  # test_results.to_csv(predict, float_format='%.2f')
 
   # plot orig price and predicted price
-  fig = px.line(test_results, x=test_results['Date'], y=["Close Prices", "Test Predictions"],
-                title="PREDICTED BRENT CRUDE OIL PRICES", width=1000)
+  fig = px.line(test_results, x=test_results['Date'], y=["Close Prices", "LSTM Predictions"],
+                title="LSTM PREDICTED BRENT CRUDE OIL PRICES", width=1000)
   st.plotly_chart(fig, use_container_width=True)
   #VISUALIZE DATA 
   plt.figure(figsize=(24,24))
   plt.grid(True)
+  return test_results
 
-evaluate_lstm_model(trainData*.01)
-
-
-# # TODO: find better line graphs for visualization
-# # st.line_chart(data=df['Close'], width=0, height=0, use_container_width=True,)
-
-
-# # or plot the time series 
-# fig = px.line(df, x=df.index, y=["Close","Open"], 
-#     title="BRENT CRUDE OIL PRICES", width=1000)
-# st.plotly_chart(fig, use_container_width=True)
-
-# # predicted data
-# st.header("Predicted Data")
-
+results = evaluate_lstm_model(trainData*.01)
+results
 # # model
 
-# # ARIMA MODEL
-# # TRAIN,TEST,&SPLIT DATA
+# ARIMA MODEL
+# TRAIN,TEST,&SPLIT DATA
 
-# # split data
-# row = int(len(df)*(trainData*.01)) #80% testing
+# split data
+row = int(len(df)*(trainData*.01)) #80% testing
 
-# trainingData = list(df[0:row]['Close'])
-# # len(trainingData)
-# testingData = list(df[row:]['Close'])
-# # len(testingData)
-# #using historical data to predict future data
+trainingData = list(df[0:row]['Close'])
+# len(trainingData)
+testingData = list(df[row:]['Close'])
+# len(testingData)
+#using historical data to predict future data
 
-# predictions = []
-# nObservations = len(testingData)
+predictions = []
+nObservations = len(testingData)
 
-# for i in range(nObservations):
-#   model = ARIMA(trainingData, order=(pValue,dValue,qValue)) #p,d,q
-#   # model = sm.tsa.arima.ARIMA(trainingData, order=(4,1,0)) #p,d,q
-#   model_fit=model.fit()
-#   output= model_fit.forecast()
-#   yhat = list(output[0])[0]
-#   predictions.append(yhat)
-#   actualTestValue = testingData[i]
-#   # update training set
-#   trainingData.append(actualTestValue)
-#   #print(output)
-#   #break
+for i in range(nObservations):
+  model = ARIMA(trainingData, order=(pValue,dValue,qValue)) #p,d,q
+  # model = sm.tsa.arima.ARIMA(trainingData, order=(4,1,0)) #p,d,q
+  model_fit=model.fit()
+  output= model_fit.forecast()
+  yhat = list(output[0])[0]
+  predictions.append(yhat)
+  actualTestValue = testingData[i]
+  # update training set
+  trainingData.append(actualTestValue)
+  #print(output)
+  #break
 
-# # print summary
-# details = st.checkbox('Details')
+# print summary
+details = st.checkbox('Details')
 
-# arimamodsum=model_fit.summary()
-# if details:
-#   st.write(arimamodsum)
+arimamodsum=model_fit.summary()
+if details:
+  st.write(arimamodsum)
 
-# # st.write(predictions)
-# predictionss = pd.DataFrame(predictions)
-# # df['ARIMApredictions'] = predictions
+# st.write(predictions)
+predictionss = pd.DataFrame(predictions)
+# df['ARIMApredictions'] = predictions
 
-# # df = pd.insert([predictionss])
+# df = pd.insert([predictionss])
 
-# # st.write(predictionss)
-# # df
+# st.write(predictionss)
+# df
 
-# testingSet = pd.DataFrame(testingData)
-# testingSet['ARIMApredictions'] = predictions
-# testingSet.columns = ['Close Prices', 'ARIMA Predictions']
-# testingSet
+testingSet = pd.DataFrame(testingData)
+testingSet['ARIMApredictions'] = predictions
+testingSet.columns = ['Close Prices', 'ARIMA Predictions']
+testingSet
+
+results["ARIMA Predictions"] = testingSet["ARIMA Predictions"]
+results
 
 # # plot orig price and predicted price
 # fig = px.line(testingSet, x=testingSet.index, y=["Close Prices","ARIMA Predictions"], 
-#     title="PREDICTED BRENT CRUDE OIL PRICES", width=1000)
+#     title="ARIMA PREDICTED BRENT CRUDE OIL PRICES", width=1000)
 # st.plotly_chart(fig, use_container_width=True)
 
-# # #VISUALIZE DATA 
-# # plt.figure(figsize=(24,24))
-# # plt.grid(True)
+# plot orig price and predicted price
+fig = px.line(results, x=results["Date"], y=["Close Prices", "ARIMA Predictions", "LSTM Predictions"],
+    title="BOTH PREDICTED BRENT CRUDE OIL PRICES", width=1000)
+st.plotly_chart(fig, use_container_width=True)
 
-# # dateRange = df[row:].index
+# #VISUALIZE DATA 
+# plt.figure(figsize=(24,24))
+# plt.grid(True)
 
-# # plt.plot(dateRange, predictions, color='blue', marker = 'o', linestyle ='dashed', label='Predicted Brent Price')
-# # plt.plot(dateRange, testingData, color='red', label='Original Brent Price')
+# dateRange = df[row:].index
 
-# # plt.title(" ARIMA BRENT PRICE PREDICTION")
-# # plt.xlabel('Date')
-# # plt.ylabel('Price')
-# # plt.legend()
-# # plt.show()
+# plt.plot(dateRange, predictions, color='blue', marker = 'o', linestyle ='dashed', label='Predicted Brent Price')
+# plt.plot(dateRange, testingData, color='red', label='Original Brent Price')
 
-# mape=np.mean(np.abs(np.array(predictions)-np.array(testingData))/np.abs(testingData))
-# mse = np.square(np.subtract(testingData,predictions)).mean()
-# MSE=mean_squared_error(testingData,predictions)
-# MAPE = mean_absolute_percentage_error(testingData,predictions)
-# MAE=mean_absolute_error(testingData,predictions)
+# plt.title(" ARIMA BRENT PRICE PREDICTION")
+# plt.xlabel('Date')
+# plt.ylabel('Price')
+# plt.legend()
+# plt.show()
 
-# st.write("MAPE: "+ str(mape)) #Mean absolute Percentage Error
-# st.write("MAPE: "+ str(MAPE)) #Mean absolute Percentage Error
-# st.write("MSE: "+ str(mse)) #MSE
-# st.write("MSE: "+ str(MSE)) #MSE
+mape=np.mean(np.abs(np.array(predictions)-np.array(testingData))/np.abs(testingData))
+mse = np.square(np.subtract(testingData,predictions)).mean()
+MSE=mean_squared_error(testingData,predictions)
+MAPE = mean_absolute_percentage_error(testingData,predictions)
+MAE=mean_absolute_error(testingData,predictions)
 
-# accTable=pd.DataFrame()
-# accTable['MAPE'] = [mape]
-# accTable['MSE'] = [mse]
-# accTable['Improved'] = [2200]
+st.write("MAPE: "+ str(mape)) #Mean absolute Percentage Error
+st.write("MAPE: "+ str(MAPE)) #Mean absolute Percentage Error
+st.write("MSE: "+ str(mse)) #MSE
+st.write("MSE: "+ str(MSE)) #MSE
 
-# # accuracy metrics
-# st.header("Accuracy Metrics")
+accTable=pd.DataFrame()
+accTable['MAPE'] = [mape]
+accTable['MSE'] = [mse]
+accTable['Improved'] = [2200]
 
-# st.table(accTable)
+# accuracy metrics
+st.header("Accuracy Metrics")
 
-# # ______________________________________________________
-# # sample read from local file!!!
-# readfile=pd.read_csv('ARIMA/Sheets/ARIMA-WEEKLY.csv')
-# readfile
+st.table(accTable)
 
-# from statsmodels.tsa.arima_model import ARIMAResults
-# # load csv
-# # file = pd.read_csv('./PREDICTIONS_ARIMA_80.0.csv')
-# file = pd.read_csv('./PREDICTIONS_ARIMA_80.0_(4,2,2).csv')
-# file
-# # load model
-# # loaded = ARIMAResults.load('ARIMA_80.0.pkl')
-# loaded = ARIMAResults.load('ARIMA_80.0_(4, 2, 2).pkl')
-# st.write(loaded.summary())
+# ______________________________________________________
+# sample read from local file!!!
+readfile=pd.read_csv('ARIMA/Sheets/ARIMA-WEEKLY.csv')
+readfile
 
-# # file['ARIMA Predictions']
-# # file['Close Prices']
+from statsmodels.tsa.arima_model import ARIMAResults
+# load csv
+# file = pd.read_csv('./PREDICTIONS_ARIMA_80.0.csv')
+file = pd.read_csv('./PREDICTIONS_ARIMA_80.0_(4,2,2).csv')
+file
+# load model
+# loaded = ARIMAResults.load('ARIMA_80.0.pkl')
+loaded = ARIMAResults.load('ARIMA_80.0_(4, 2, 2).pkl')
+st.write(loaded.summary())
 
-# # # evaluate model
-# # mse = float(mse_eval(file['Close Prices'],file['ARIMA Predictions']))
-# # mape = mape_eval(file['Close Prices'],file['ARIMA Predictions'])
-# # print("MSE: "+ str(mse))
-# # print("MAPE: "+ str(mape))
+# file['ARIMA Predictions']
+# file['Close Prices']
+
+# # evaluate model
+# mse = float(mse_eval(file['Close Prices'],file['ARIMA Predictions']))
+# mape = mape_eval(file['Close Prices'],file['ARIMA Predictions'])
+# print("MSE: "+ str(mse))
+# print("MAPE: "+ str(mape))
