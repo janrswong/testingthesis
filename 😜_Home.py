@@ -54,7 +54,7 @@ df = yf.download('BZ=F', interval=getInterval(interv[0]))
 st.dataframe(df.head())
 
 # TODO: standard deviation
-
+# TODO: find AgGrid customization 
 # AgGrid(df)
 
 # accuracy metrics
