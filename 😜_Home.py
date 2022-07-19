@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
-import numpy as np
+# import numpy as np
 import plotly.express as px
 import joblib
 import math
