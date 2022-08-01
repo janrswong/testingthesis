@@ -2,6 +2,7 @@
 
 import streamlit as st
 import pandas as pd
+import plotly.graph_objects as go
 import yfinance as yf
 import matplotlib.pyplot as plt
 # import numpy as np
@@ -51,8 +52,31 @@ file.drop("Unnamed: 0", axis=1, inplace=True)
 # select columns
 columns = file.columns.to_list()
 # st.write(columns)
-selectedCols= st.multiselect("Select models",columns)
+selectedCols = st.multiselect("Select models", columns)
 df = file[selectedCols]
 st.dataframe(df)
 
+# get list of columns
+pltcols = list(df)
+st.dataframe(pltcols)
+st.write(pltcols[0])
+
+collist = list()
+collist.append(pltcols)
+for cols in collist:
+    st.write(cols)
+
+st.write(collist)
+
+# plot selected columns
+# fig = px.line(df, x=df['Date'], y=[df['Close Prices'], df['ARIMA_80.0_(2, 0, 0)_Predictions']], title="Prices", width=1000)
+# st.plotly_chart(fig, use_container_width=True)
+
+# TODO: Plot df in same window
+# working but opens on separate window
+fig = go.Figure()
+for idx, col in enumerate(df.columns, 0):
+    fig.add_trace(go.Scatter(
+        x=file['Date'], y=df.iloc[1:, idx], mode='lines', name=col))
+fig.show()
 # LSTM
