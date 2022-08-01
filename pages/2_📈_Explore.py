@@ -54,7 +54,13 @@ columns = file.columns.to_list()
 # st.write(columns)
 selectedCols = st.multiselect("Select models", columns)
 df = file[selectedCols]
+# df1 = file['Date']
+# df1.reset_index()
+# for col in selectedCols:
+#     df1[selectedCols[col]] = file[selectedCols[col]]
 st.dataframe(df)
+
+print(df.columns.values)
 
 # get list of columns
 pltcols = list(df)
@@ -76,7 +82,9 @@ st.write(collist)
 # working but opens on separate window
 fig = go.Figure()
 for idx, col in enumerate(df.columns, 0):
-    fig.add_trace(go.Scatter(
-        x=file['Date'], y=df.iloc[1:, idx], mode='lines', name=col))
+    # print(df.iloc[1:,idx])
+    if col !='Date':
+        fig.add_trace(go.Scatter(
+            x=file['Date'], y=df.iloc[1:, idx], mode='lines', name=col))
 fig.show()
 # LSTM
