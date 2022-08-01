@@ -33,8 +33,6 @@ def get_location(interv, intervals):
 location = get_location(interv, intervals)
 
 # pagination function for aggrid
-
-
 def pagination(df):
     gb = GridOptionsBuilder.from_dataframe(df)
     gb.configure_pagination(paginationAutoPageSize=True)
@@ -45,9 +43,6 @@ def pagination(df):
 file = pd.read_csv(get_location(interv, intervals))
 page = pagination(file)
 file.drop("Unnamed: 0", axis=1, inplace=True)
-# show table
-# AgGrid(file, width='100%', theme='streamlit',
-#        fit_columns_on_grid_load=True, gridOptions=page)
 
 # select columns
 columns = file.columns.to_list()
@@ -57,22 +52,6 @@ df = file[selectedCols]
 st.dataframe(df)
 
 print(df.columns.values)
-
-# get list of columns
-pltcols = list(df)
-st.dataframe(pltcols)
-st.write(pltcols[0])
-
-collist = list()
-collist.append(pltcols)
-for cols in collist:
-    st.write(cols)
-
-st.write(collist)
-
-# plot selected columns
-# fig = px.line(df, x=df['Date'], y=[df['Close Prices'], df['ARIMA_80.0_(2, 0, 0)_Predictions']], title="Prices", width=1000)
-# st.plotly_chart(fig, use_container_width=True)
 
 
 fig = go.Figure()
