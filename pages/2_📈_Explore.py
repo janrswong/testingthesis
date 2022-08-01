@@ -1,4 +1,4 @@
-# TODO: add combined data w selection(explore), add statefulness in selects 
+# TODO: add combined data w selection(explore), add statefulness in selects
 
 import streamlit as st
 import pandas as pd
@@ -9,24 +9,17 @@ import plotly.express as px
 from st_aggrid import GridOptionsBuilder, AgGrid
 
 # page expands to full width
-st.set_page_config(page_title="LSTM vs ARIMA", layout='wide')
+st.set_page_config(page_title="Explore Models", layout='wide')
 
-# arima
-
-
+# ARIMA
 # slider interval
 interv = st.select_slider('Select Time Series Data Interval for Prediction', options=[
-                          'Weekly', 'Monthly', 'Quarterly', 'Daily'],value='Weekly')
-
-st.write(interv)
+                          'Weekly', 'Monthly', 'Quarterly', 'Daily'], value='Weekly')
 
 # dropdown 50 60 80
-
 st.write("Select Split")
 intervals = st.selectbox(
     "Select Interval:", ('80', '60', '50'))
-
-st.write(intervals)
 
 # read file from select interval and dropdown split
 
@@ -35,9 +28,8 @@ def get_location(interv, intervals):
     location = 'Explore/ARIMA/' + interv + '/' + intervals + '.csv'
     return location
 
-location = get_location(interv, intervals)
 
-st.write(location)
+location = get_location(interv, intervals)
 
 # pagination function for aggrid
 
@@ -48,18 +40,19 @@ def pagination(df):
     return gb.build()
 
 
-# select columns
-# file = pd.read_csv(location)
-# page = pagination(file)
-# AgGrid(file, width='100%', theme='streamlit', fit_columns_on_grid_load=True,
-#        key='combined', gridOptions=page)
-
-
+# read file
 file = pd.read_csv(get_location(interv, intervals))
 page = pagination(file)
-AgGrid(file, width='100%', theme='streamlit', fit_columns_on_grid_load=True,
-       key='combined', gridOptions=page)
+file.drop("Unnamed: 0", axis=1, inplace=True)
+# show table
+# AgGrid(file, width='100%', theme='streamlit',
+#        fit_columns_on_grid_load=True, gridOptions=page)
 
+# select columns
+columns = file.columns.to_list()
+# st.write(columns)
+selectedCols= st.multiselect("Select models",columns)
+df = file[selectedCols]
+st.dataframe(df)
 
-
-# lstm
+# LSTM

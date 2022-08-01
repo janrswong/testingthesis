@@ -25,6 +25,7 @@ interv = st.select_slider('Select Time Series Data Interval for Prediction', opt
 
 # Function to convert time series to interval
 
+
 def getInterval(argument):
     switcher = {
         "W": "1wk",
@@ -43,6 +44,7 @@ df = yf.download('BZ=F', interval=getInterval(interv[0]))
 # st.dataframe(df.head())
 
 df = df.reset_index()
+
 
 def pagination(df):
     gb = GridOptionsBuilder.from_dataframe(df)
@@ -88,8 +90,6 @@ readfile.drop("Unnamed: 0", axis=1, inplace=True)
 AgGrid(readfile, key='LSTMMetric', fit_columns_on_grid_load=True,
        enable_enterprise_modules=True, theme='streamlit')
 
-# TODO: Import ARIMA-DAILY.csv adn uncomment code
-
 # ARIMA METRICS
 st.write("ARIMA Metrics")
 intervals = st.selectbox(
@@ -118,9 +118,9 @@ elif intervals == 'Quarterly':
 
 elif intervals == 'Daily':
     file = pd.read_csv('ARIMAMetrics/ARIMA-DAILY.csv')
-    file.drop("Unnamed: 0", axis=1,inplace=True)
+    file.drop("Unnamed: 0", axis=1, inplace=True)
     page = pagination(file)
-    AgGrid(file, key='dailyMetric', width='100%',fit_columns_on_grid_load=True,
+    AgGrid(file, key='dailyMetric', width='100%', fit_columns_on_grid_load=True,
            enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
 
 # MODEL OUTPUT TABLE

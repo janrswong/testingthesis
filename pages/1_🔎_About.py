@@ -1,5 +1,8 @@
 import streamlit as st
 
+# page expands to full width
+st.set_page_config(page_title="About", layout='wide')
+
 st.title('About the Research')
 
 # a. how the thing works
