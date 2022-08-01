@@ -54,10 +54,6 @@ columns = file.columns.to_list()
 # st.write(columns)
 selectedCols = st.multiselect("Select models", columns)
 df = file[selectedCols]
-# df1 = file['Date']
-# df1.reset_index()
-# for col in selectedCols:
-#     df1[selectedCols[col]] = file[selectedCols[col]]
 st.dataframe(df)
 
 print(df.columns.values)
@@ -78,13 +74,16 @@ st.write(collist)
 # fig = px.line(df, x=df['Date'], y=[df['Close Prices'], df['ARIMA_80.0_(2, 0, 0)_Predictions']], title="Prices", width=1000)
 # st.plotly_chart(fig, use_container_width=True)
 
-# TODO: Plot df in same window
-# working but opens on separate window
+
 fig = go.Figure()
 for idx, col in enumerate(df.columns, 0):
     # print(df.iloc[1:,idx])
-    if col !='Date':
+    if col != 'Date':
         fig.add_trace(go.Scatter(
             x=file['Date'], y=df.iloc[1:, idx], mode='lines', name=col))
-fig.show()
+
+# working but opens on separate window
+# fig.show()
+# opens on same window
+st.plotly_chart(fig, use_container_width=True)
 # LSTM
