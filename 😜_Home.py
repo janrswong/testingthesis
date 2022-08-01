@@ -1,24 +1,12 @@
-# TODO: import daily, add combined data w selection, finalize home
-from distutils.command import sdist
-from statsmodels.tsa.arima_model import ARIMAResults
+# TODO: import daily, add combined data w selection(explore), finalize home
+
 import streamlit as st
 import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
 # import numpy as np
 import plotly.express as px
-import joblib
-import math
-from statsmodels.tsa.arima_model import ARIMA
-from sklearn.metrics import mean_absolute_percentage_error, mean_squared_error, mean_absolute_error
-import tensorflow as tf
-from tensorflow import keras
-from keras.models import Sequential
-from keras.layers import Dense, LSTM
-# from tensorflow.keras import layers
-# from tensorflow.keras.optimizers import Adam
-# from tensorflow.keras.callbacks import ModelCheckpoint
-from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode, JsCode
+from st_aggrid import GridOptionsBuilder, AgGrid
 
 # page expands to full width
 st.set_page_config(page_title="LSTM vs ARIMA", layout='wide')
@@ -36,7 +24,6 @@ interv = st.select_slider('Select Time Series Data Interval for Prediction', opt
 # st.write(interv[0])
 
 # Function to convert time series to interval
-
 
 def getInterval(argument):
     switcher = {
@@ -56,9 +43,6 @@ df = yf.download('BZ=F', interval=getInterval(interv[0]))
 # st.dataframe(df.head())
 
 df = df.reset_index()
-
-# TODO: find AgGrid customization
-
 
 def pagination(df):
     gb = GridOptionsBuilder.from_dataframe(df)
@@ -132,12 +116,12 @@ elif intervals == 'Quarterly':
     AgGrid(file, key='quarterlyMetric', fit_columns_on_grid_load=True,
            enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
 
-# elif intervals == 'Daily':
-#     file = pd.read_csv('ARIMAMetrics/ARIMA-DAILY.csv')
-#     file.drop("Unnamed: 0", axis=1,inplace=True)
-#     page = pagination(file)
-#     AgGrid(file, key='dailyMetric', width='100%',fit_columns_on_grid_load=True,
-#            enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
+elif intervals == 'Daily':
+    file = pd.read_csv('ARIMAMetrics/ARIMA-DAILY.csv')
+    file.drop("Unnamed: 0", axis=1,inplace=True)
+    page = pagination(file)
+    AgGrid(file, key='dailyMetric', width='100%',fit_columns_on_grid_load=True,
+           enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
 
 # MODEL OUTPUT TABLE
 st.header("Model Output (Close Prices vs. Predicted Prices)")
@@ -182,13 +166,13 @@ elif interval == 'Quarterly':
     st.plotly_chart(fig, use_container_width=True)
 
 
-# elif interval == 'Daily':
-#     file = pd.read_csv('bestDaily.csv')
+elif interval == 'Daily':
+    file = pd.read_csv('bestDaily.csv')
 
-#     AgGrid(file, key='dailyCombined', fit_columns_on_grid_load=True,
-#            enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
-#     # Visualization
-#     st.header("Visualization")
-#     fig = px.line(file, x=file["Date"], y=["Close Prices", "ARIMA_50.0_(0, 1, 1)_Predictions",  # find file
-#                                            "LSTM_65.0_Predictions"], title="BOTH PREDICTED BRENT CRUDE OIL PRICES", width=1000)
-#     st.plotly_chart(fig, use_container_width=True)
+    AgGrid(file, key='dailyCombined', fit_columns_on_grid_load=True,
+           enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
+    # Visualization
+    st.header("Visualization")
+    fig = px.line(file, x=file["Date"], y=["Close Prices", "ARIMA_50.0_(0, 1, 0)_Predictions",  # find file
+                                           "LSTM_60.0_Predictions"], title="BOTH PREDICTED BRENT CRUDE OIL PRICES", width=1000)
+    st.plotly_chart(fig, use_container_width=True)
