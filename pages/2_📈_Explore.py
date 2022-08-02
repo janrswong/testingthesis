@@ -1,4 +1,4 @@
-# TODO: add combined data w selection(explore), add statefulness in selects
+# TODO: add descriptions on how to use
 
 import streamlit as st
 import pandas as pd
@@ -26,7 +26,8 @@ intervals = st.selectbox(
 
 
 def get_location(interv, intervals):
-    location = 'Explore/ARIMA/' + interv + '/' + intervals + '.csv'
+    # location = 'Explore/ARIMA/' + interv + '/' + intervals + '.csv'
+    location = 'Explore/PREDICTIONS/' + interv + '/' + intervals + '.csv'
     return location
 
 
@@ -47,11 +48,11 @@ file.drop("Unnamed: 0", axis=1, inplace=True)
 # select columns
 columns = file.columns.to_list()
 # st.write(columns)
-selectedCols = st.multiselect("Select models", columns)
+selectedCols = st.multiselect("Select models", columns, default=["Date","Close Prices"])
 df = file[selectedCols]
 st.dataframe(df)
 
-print(df.columns.values)
+# print(df.columns.values)
 
 
 fig = go.Figure()
@@ -65,4 +66,5 @@ for idx, col in enumerate(df.columns, 0):
 # fig.show()
 # opens on same window
 st.plotly_chart(fig, use_container_width=True)
+
 # LSTM

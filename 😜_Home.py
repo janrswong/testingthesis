@@ -19,7 +19,7 @@ st.subheader("""© Castillon, Ignas, Wong""")
 
 # select time interval
 interv = st.select_slider('Select Time Series Data Interval for Prediction', options=[
-                          'Weekly', 'Monthly', 'Quarterly', 'Yearly'])
+                          'Weekly', 'Monthly', 'Quarterly', 'Daily'])
 
 # st.write(interv[0])
 
@@ -31,9 +31,9 @@ def getInterval(argument):
         "W": "1wk",
         "M": "1mo",
         "Q": "3mo",
-        "Y": "1d"
+        "D": "1d"
     }
-    return switcher.get(argument, "1d")
+    return switcher.get(argument, "1wk")
 
 
 # show raw data
@@ -57,6 +57,7 @@ def pagination(df):
 page = pagination(df)
 AgGrid(df, enable_enterprise_modules=True,
        theme='streamlit', gridOptions=page, fit_columns_on_grid_load=True, key='data')
+st.dataframe(df)
 
 # TODO: standard deviation
 st.header("Standard Deviation")
