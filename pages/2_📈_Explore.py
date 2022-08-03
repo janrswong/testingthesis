@@ -12,6 +12,8 @@ from st_aggrid import GridOptionsBuilder, AgGrid
 # page expands to full width
 st.set_page_config(page_title="Explore Models", layout='wide')
 
+st.header("Explore Models")
+
 # ARIMA
 # slider interval
 interv = st.select_slider('Select Time Series Data Interval for Prediction', options=[
@@ -62,9 +64,7 @@ for idx, col in enumerate(df.columns, 0):
         fig.add_trace(go.Scatter(
             x=file['Date'], y=df.iloc[1:, idx], mode='lines', name=col))
 
-# working but opens on separate window
-# fig.show()
-# opens on same window
+
 st.plotly_chart(fig, use_container_width=True)
 
 # LSTM

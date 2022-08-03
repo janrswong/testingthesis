@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 # import numpy as np
 import plotly.express as px
 from st_aggrid import GridOptionsBuilder, AgGrid
+import plotly.graph_objects as go
 
 # page expands to full width
 st.set_page_config(page_title="LSTM vs ARIMA", layout='wide')
@@ -16,6 +17,7 @@ st.set_page_config(page_title="LSTM vs ARIMA", layout='wide')
 st.title("Crude Oil Benchmark Stock Price Prediction LSTM and ARIMA Models")
 st.subheader("""© Castillon, Ignas, Wong""")
 
+st.header("Raw Data")
 
 # select time interval
 interv = st.select_slider('Select Time Series Data Interval for Prediction', options=[
@@ -26,6 +28,7 @@ interv = st.select_slider('Select Time Series Data Interval for Prediction', opt
 # Function to convert time series to interval
 
 
+@st.cache(persist=True, allow_output_mutation=True)
 def getInterval(argument):
     switcher = {
         "W": "1wk",
@@ -37,12 +40,14 @@ def getInterval(argument):
 
 
 # show raw data
-st.header("Raw Data")
+# st.header("Raw Data")
 # using button
 # if st.button('Press to see Brent Crude Oil Raw Data'):
-df = yf.download('BZ=F', interval=getInterval(interv[0]))
-# st.dataframe(df.head())
 
+
+df = yf.download('BZ=F', interval=getInterval(interv[0]))
+
+# st.dataframe(df.head())
 df = df.reset_index()
 
 
@@ -55,9 +60,12 @@ def pagination(df):
 # enable enterprise modules for trial only
 # raw data
 page = pagination(df)
-AgGrid(df, enable_enterprise_modules=True,
-       theme='streamlit', gridOptions=page, fit_columns_on_grid_load=True, key='data')
-st.dataframe(df)
+# AgGrid(df, enable_enterprise_modules=True,
+#        theme='streamlit', gridOptions=page, fit_columns_on_grid_load=True, key='data')
+# st.dataframe(df, width=2000, height=600)
+# st.write(df)
+st.table(df.head())
+
 
 # TODO: standard deviation
 st.header("Standard Deviation")
