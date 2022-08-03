@@ -1,4 +1,4 @@
-# TODO: need fixing for finalization
+# TODO: need fixing for finalizations
 from statsmodels.tsa.arima_model import ARIMAResults
 import streamlit as st
 import pandas as pd
