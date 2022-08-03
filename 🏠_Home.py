@@ -1,4 +1,4 @@
-# TODO: import daily, add combined data w selection(explore), finalize home
+# TODO: dl weekly,mo,d,q csv until 2022 / view data via button
 
 import streamlit as st
 import pandas as pd
@@ -147,7 +147,7 @@ if interval == 'Weekly':
     # Visualization
     st.header("Visualization")
     fig = px.line(file, x=file["Date"], y=["Close Prices", "ARIMA_50.0_(1, 0, 0)_Predictions",
-                  "LSTM_60.0_Predictions"], title="BOTH PREDICTED BRENT CRUDE OIL PRICES", width=1000)
+                  "LSTM_80.0_Predictions"], title="BOTH PREDICTED BRENT CRUDE OIL PRICES", width=1000)
     st.plotly_chart(fig, use_container_width=True)
 
 
