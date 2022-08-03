@@ -1,4 +1,4 @@
-# TODO: dl weekly,mo,d,q csv until 2022 / view data via button
+# TODO: dl weekly,mo,d,q csv until 2022 / view data via button to new tab
 
 import streamlit as st
 import pandas as pd
