@@ -12,7 +12,7 @@ from st_aggrid import GridOptionsBuilder, AgGrid
 # page expands to full width
 st.set_page_config(page_title="Explore Models", layout='wide')
 
-st.header("Explore Models")
+st.title("Explore Models")
 
 # ARIMA
 # slider interval

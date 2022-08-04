@@ -65,7 +65,20 @@ page = pagination(df)
 # st.dataframe(df, width=2000, height=600)
 # st.write(df)
 st.table(df.head())
+# download full data
+@st.cache
+def convert_df(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv().encode('utf-8')
 
+csv = convert_df(df)
+
+st.download_button(
+     label="Download data as CSV",
+     data=csv,
+     file_name='Brent Oil Prices.csv',
+     mime='text/csv',
+)
 
 # TODO: standard deviation
 st.header("Standard Deviation")
