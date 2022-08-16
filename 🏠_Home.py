@@ -1,4 +1,4 @@
-# TODO: dl weekly,mo,d,q csv until 2022 / view data via button to new tab and view 
+# TODO: dl weekly,mo,d,q csv until 2022 / view data via button to new tab and view
 
 import streamlit as st
 import pandas as pd
@@ -66,21 +66,24 @@ page = pagination(df)
 # st.write(df)
 st.table(df.head())
 # download full data
+
+
 @st.cache
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     return df.to_csv().encode('utf-8')
 
+
 csv = convert_df(df)
 
 st.download_button(
-     label="Download data as CSV",
-     data=csv,
-     file_name='Brent Oil Prices.csv',
-     mime='text/csv',
+    label="Download data as CSV",
+    data=csv,
+    file_name='Brent Oil Prices.csv',
+    mime='text/csv',
 )
 
-# TODO: standard deviation
+
 st.header("Standard Deviation")
 sd = pd.read_csv('StandardDeviation.csv')
 sd.drop("Unnamed: 0", axis=1, inplace=True)
@@ -104,46 +107,69 @@ st.plotly_chart(fig, use_container_width=True)
 
 # accuracy metrics
 st.header("Accuracy Metric Comparison")
+intervals = st.selectbox(
+    "Select Interval:", ('Weekly', 'Monthly', 'Quarterly', 'Daily'), key='metricKey')
+with st.container():
+    col1, col2 = st.columns(2)
 
 # LSTM METRICS
-st.write("LSTM Metrics")
+# st.write("LSTM Metrics")
+
+
 readfile = pd.read_csv('LSTM.csv')
+# readfile = readfile[readfile['Interval'] == intervals.upper()]
+readfile = readfile[readfile['Interval']== st.session_state.metricKey.upper()]
+# readfile[readfile['Interval'] == intervals.upper()]
+# readfile = updatefile(readfile)
 readfile.drop("Unnamed: 0", axis=1, inplace=True)
-AgGrid(readfile, key='LSTMMetric', fit_columns_on_grid_load=True,
-       enable_enterprise_modules=True, theme='streamlit')
+with col1:
+    st.write("LSTM Metrics")
+    AgGrid(readfile, key=st.session_state.metricKey, fit_columns_on_grid_load=True,
+           enable_enterprise_modules=True, theme='streamlit')
+
+
+# st.write(st.session_state.metricKey)
 
 # ARIMA METRICS
-st.write("ARIMA Metrics")
-intervals = st.selectbox(
-    "Select Interval:", ('Weekly', 'Monthly', 'Quarterly', 'Daily'))
+# st.write("ARIMA Metrics")
+# intervals = st.selectbox(
+#     "Select Interval:", ('Weekly', 'Monthly', 'Quarterly', 'Daily'))
 
 if intervals == 'Weekly':
     file = pd.read_csv('ARIMAMetrics/ARIMA-WEEKLY.csv')
     file.drop("Unnamed: 0", axis=1, inplace=True)
     page = pagination(file)
-    AgGrid(file, width='100%', theme='streamlit', fit_columns_on_grid_load=True,
-           key='weeklyMetric', gridOptions=page)
+    with col2:
+        st.write("ARIMA Metrics")
+        AgGrid(file, width='100%', theme='streamlit',
+               fit_columns_on_grid_load=True, key='weeklyMetric', gridOptions=page)
 
 elif intervals == 'Monthly':
     file = pd.read_csv('ARIMAMetrics/ARIMA-MONTHLY.csv')
     file.drop("Unnamed: 0", axis=1, inplace=True)
     page = pagination(file)
-    AgGrid(file, key='monthlyMetric', fit_columns_on_grid_load=True,
-           enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
+    with col2:
+        st.write("ARIMA Metrics")
+        AgGrid(file, key='monthlyMetric', fit_columns_on_grid_load=True,
+               enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
 
 elif intervals == 'Quarterly':
     file = pd.read_csv('ARIMAMetrics/ARIMA-QUARTERLY.csv')
     file.drop("Unnamed: 0", axis=1, inplace=True)
     page = pagination(file)
-    AgGrid(file, key='quarterlyMetric', fit_columns_on_grid_load=True,
-           enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
+    with col2:
+        st.write("ARIMA Metrics")
+        AgGrid(file, key='quarterlyMetric', fit_columns_on_grid_load=True,
+               enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
 
 elif intervals == 'Daily':
     file = pd.read_csv('ARIMAMetrics/ARIMA-DAILY.csv')
     file.drop("Unnamed: 0", axis=1, inplace=True)
     page = pagination(file)
-    AgGrid(file, key='dailyMetric', width='100%', fit_columns_on_grid_load=True,
-           enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
+    with col2:
+        st.write("ARIMA Metrics")
+        AgGrid(file, key='dailyMetric', width='100%', fit_columns_on_grid_load=True,
+               enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
 
 # MODEL OUTPUT TABLE
 st.header("Model Output (Close Prices vs. Predicted Prices)")
