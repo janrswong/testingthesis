@@ -4,6 +4,7 @@ import base64
 
 # function play gif
 
+
 def gif(location):
     """### gif from local file"""
     file_ = open(location, "rb")
@@ -19,6 +20,7 @@ def gif(location):
         f'<img src="data:image/gif;base64,{data_url}" alt="instructions gif" width="100%">',
         unsafe_allow_html=True,
     ))
+
 
 hide_menu_style = """
 <style>
@@ -61,16 +63,15 @@ gif('assets/images/Select1.gif')
 st.markdown('### How to use the <a href="Make_a_Model" target="_self" style="text-decoration:none; color: tomato;">📊 Make a Model</a>' ' tab', unsafe_allow_html=True)
 st.markdown('<p> The Make a Model tab lets you <strong>create your own model</strong>! Choose the different parameters and test-train splits to your liking for an interactive experience with our time series models. <br> </p>', unsafe_allow_html=True)
 
-st.markdown('<p> Get acquanited with all the controls on the page by starting with the side menu. Here, you can adjust the train-test split and ARIMA p, d, and q values as you like! </p>', unsafe_allow_html=True)
-gif('assets/images/Set_pdq_values.gif')
-
 st.markdown('<p> Use the slider to select your preferred time interval. You can also download the full raw data in CSV format by clicking the button below! </p>', unsafe_allow_html=True)
 gif('assets/images/Slider1.gif')
 gif('assets/images/Download_CSV.gif')
 
+st.markdown('<p> Get acquanited with all the controls on the page by starting with the side menu. Here, you can adjust the train-test split and ARIMA p, d, and q values as you like! </p>', unsafe_allow_html=True)
+# gif('assets/images/Set_pdq_values.gif')
+
 st.markdown('<p> Check the "Details" box to expand the page for more information, and press the button to generate your model! </p>', unsafe_allow_html=True)
-# TODO: change gif here
-gif('assets/images/Checkbox_Details.gif')
+gif('assets/images/pdq.gif')
 
 st.markdown('<p> You can view how your model fares against the original close prices on the chart, and even see how the model you made stacks up to accuracy metrics! </p>', unsafe_allow_html=True)
 accuracy = Image.open('assets/images/make.png')
