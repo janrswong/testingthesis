@@ -9,9 +9,16 @@ import plotly.express as px
 from st_aggrid import GridOptionsBuilder, AgGrid
 import plotly.graph_objects as go
 
-# page expands to full width
-st.set_page_config(page_title="LSTM vs ARIMA", layout='wide')
+hide_menu_style = """
+<style>
+#MainMenu{visibility: hidden;}
+footer{visibility:hidden;}
+</style>
+"""
 
+# page expands to full width
+st.set_page_config(page_title="LSTM vs ARIMA", layout='wide', page_icon="🏠")
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 # PAGE LAYOUT
 # heading
 st.title("Crude Oil Benchmark Stock Price Prediction LSTM and ARIMA Models")

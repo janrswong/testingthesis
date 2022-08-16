@@ -8,10 +8,15 @@ import matplotlib.pyplot as plt
 # import numpy as np
 import plotly.express as px
 from st_aggrid import GridOptionsBuilder, AgGrid
-
+hide_menu_style = """
+<style>
+#MainMenu{visibility: hidden;}
+footer{visibility:hidden;}
+</style>
+"""
 # page expands to full width
-st.set_page_config(page_title="Explore Models", layout='wide')
-
+st.set_page_config(page_title="Explore Models", layout='wide', page_icon="📈")
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 st.title("Explore Models")
 
 # ARIMA
@@ -36,6 +41,8 @@ def get_location(interv, intervals):
 location = get_location(interv, intervals)
 
 # pagination function for aggrid
+
+
 def pagination(df):
     gb = GridOptionsBuilder.from_dataframe(df)
     gb.configure_pagination(paginationAutoPageSize=True)
@@ -50,7 +57,8 @@ file.drop("Unnamed: 0", axis=1, inplace=True)
 # select columns
 columns = file.columns.to_list()
 # st.write(columns)
-selectedCols = st.multiselect("Select models", columns, default=["Date","Close Prices"])
+selectedCols = st.multiselect("Select models", columns, default=[
+                              "Date", "Close Prices"])
 df = file[selectedCols]
 st.dataframe(df)
 

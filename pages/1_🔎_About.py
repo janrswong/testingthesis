@@ -4,7 +4,6 @@ import base64
 
 # function play gif
 
-
 def gif(location):
     """### gif from local file"""
     file_ = open(location, "rb")
@@ -21,10 +20,15 @@ def gif(location):
         unsafe_allow_html=True,
     ))
 
-
+hide_menu_style = """
+<style>
+#MainMenu{visibility: hidden;}
+footer{visibility:hidden;}
+</style>
+"""
 # page expands to full width
-st.set_page_config(page_title="About", layout='wide')
-
+st.set_page_config(page_title="About", layout='wide', page_icon="🔎")
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 st.title('About the Research')
 
 # a. how the thing works
@@ -64,16 +68,17 @@ st.markdown('<p> Use the slider to select your preferred time interval. You can 
 gif('assets/images/Slider1.gif')
 gif('assets/images/Download_CSV.gif')
 
-st.markdown('<p> Check the "Details" box to expand the page for more information </p>', unsafe_allow_html=True)
+st.markdown('<p> Check the "Details" box to expand the page for more information, and press the button to generate your model! </p>', unsafe_allow_html=True)
+# TODO: change gif here
 gif('assets/images/Checkbox_Details.gif')
 
 st.markdown('<p> You can view how your model fares against the original close prices on the chart, and even see how the model you made stacks up to accuracy metrics! </p>', unsafe_allow_html=True)
-accuracy = Image.open('assets/images/Accuracy.png')
+accuracy = Image.open('assets/images/make.png')
 st.image(accuracy, caption='Visualization')
 
 # b. snippets of the paper
-st.header('Documentation')
-st.markdown('<h1>Conclusions and Recommendations</h1> <h2>Conclusions</h2> <h3>Price Movement Volatility Trends</h3> <p> Price movement volatility refers to how much a set of prices changes over time and how erratic those changes are. In crude oil prices, unless there are spikes or drops due to unforeseen or anomalous circumstances, these trends tend to stray away from erratic highs and lows especially over short periods of time. It must be reiterated that this study does not take into account these anomalies, but focuses on what would be the natural, steady trend of Brent crude oil prices. That being said, the conduction of the study simply paints a clear picture of the behavior of asset prices and how the value of volatility changes over spans of time. </p>  <p> In order to quantify volatility, the standard deviation between the actual close prices (prices from the yfinance dataset) and the predicted prices are computed. From this part of the experiment, it was found that volatility is more likely to be present over longer periods of time. Additionally, it can be observed that volatility is also contingent on anomalous or external factors.</p> <p>It was found that Brent crude oil in particular shows the highest volatility trend over quarterly prices.</p>', unsafe_allow_html=True)
+
+st.markdown('<h1>Conclusions and Recommendations</h1> <p>The full documentaion of this procent can be accessed through this link: [] </p><h2>Conclusions</h2> <h3>Price Movement Volatility Trends</h3> <p> Price movement volatility refers to how much a set of prices changes over time and how erratic those changes are. In crude oil prices, unless there are spikes or drops due to unforeseen or anomalous circumstances, these trends tend to stray away from erratic highs and lows especially over short periods of time. It must be reiterated that this study does not take into account these anomalies, but focuses on what would be the natural, steady trend of Brent crude oil prices. That being said, the conduction of the study simply paints a clear picture of the behavior of asset prices and how the value of volatility changes over spans of time. </p>  <p> In order to quantify volatility, the standard deviation between the actual close prices (prices from the yfinance dataset) and the predicted prices are computed. From this part of the experiment, it was found that volatility is more likely to be present over longer periods of time. Additionally, it can be observed that volatility is also contingent on anomalous or external factors.</p> <p>It was found that Brent crude oil in particular shows the highest volatility trend over quarterly prices.</p>', unsafe_allow_html=True)
 
 st.markdown('<h3>Model Accuracy</h3> <p> Model accuracy is quantified through the use of accuracy metrics, specifically MAPE and MSE. These subsections are partitioned in accordance to the time interval of the raw data used, that being daily, weekly, monthly, and quarterly close prices.</p> <h4>Daily Interval Data</h4> <p>It was found that 96 of 102 or 94.12% ARIMA models and 3 of 3 or 100.00% LSTM models were able to attain a MAPE percentage below 10% and 96 of 102 or 94.12% ARIMA models and 3 of 3 or 100.00% LSTM models were able to attain a MSE percentage close to 0 or less than 0.1 using daily interval data.</p> <h4>Weekly Interval Data</h4> <p>It was found that 42 of 48 or 87.50% ARIMA models and 0 of 3 or 0.00% LSTM models were able to attain a MAPE percentage below 10% and 22 of 48 or 45.83%  ARIMA models and 0 of 3 or 0.00% LSTM models were able to attain a MSE percentage close to 0 or less than 0.1 using weekly interval data.</p> <h4>Monthly Interval Data</h4> <p>It was found that 62 of 160 or 38.75% ARIMA model and 1 of 3 or 33.33% LSTM models were able to attain a MAPE percentage below 10% and 0 of 160 or 0.00% ARIMA models and 0 of 3 or 0.00% LSTM models were able to attain a MSE percentage close to 0 or less than 0.1 using monthly interval data. </p> <h4>Quarterly Interval Data</h4> <p>It was found that 0 of 77 or 0.00% ARIMA models and 0 of 3 or 0.00% LSTM models were able to attain a MAPE percentage below 10% and 0 of 77 or 0.00%  ARIMA models and 0 of 3 or 0.00% LSTM models were able to attain a MSE percentage close to 0 or less than 0.1 using quarterly interval data.</p>', unsafe_allow_html=True)
 
