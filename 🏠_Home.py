@@ -1,5 +1,3 @@
-# TODO: dl weekly,mo,d,q csv until 2022 / view data via button to new tab and view
-
 import streamlit as st
 import pandas as pd
 import yfinance as yf
@@ -17,7 +15,7 @@ footer{visibility:hidden;}
 """
 
 # page expands to full width
-st.set_page_config(page_title="LSTM vs ARIMA", layout='wide', page_icon="🏠")
+st.set_page_config(page_title="Predicta.oil | Home", layout='wide', page_icon="⛽")
 st.markdown(hide_menu_style, unsafe_allow_html=True)
 # PAGE LAYOUT
 # heading
@@ -148,7 +146,7 @@ if intervals == 'Weekly':
     page = pagination(file)
     with col2:
         st.write("ARIMA Metrics")
-        AgGrid(file, width='100%', theme='streamlit',
+        AgGrid(file, width='100%', theme='streamlit', enable_enterprise_modules=True,
                fit_columns_on_grid_load=True, key='weeklyMetric', gridOptions=page)
 
 elif intervals == 'Monthly':

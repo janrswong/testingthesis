@@ -25,7 +25,7 @@ footer{visibility:hidden;}
 </style>
 """
 # page expands to full width
-st.set_page_config(page_title="Make a Model", layout='wide', page_icon="📊")
+st.set_page_config(page_title="Predicta.oil | Make a Model", layout='wide', page_icon="⛽")
 st.markdown(hide_menu_style, unsafe_allow_html=True)
 # ag grid pagination
 

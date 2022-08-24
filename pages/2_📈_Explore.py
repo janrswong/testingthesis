@@ -15,7 +15,7 @@ footer{visibility:hidden;}
 </style>
 """
 # page expands to full width
-st.set_page_config(page_title="Explore Models", layout='wide', page_icon="📈")
+st.set_page_config(page_title="Predicta.oil | Explore", layout='wide', page_icon="⛽")
 st.markdown(hide_menu_style, unsafe_allow_html=True)
 st.title("Explore Models")
 
