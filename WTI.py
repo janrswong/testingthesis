@@ -1,3 +1,4 @@
+from enum import auto
 import streamlit as st
 import pandas as pd
 import yfinance as yf
@@ -6,9 +7,11 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 from st_aggrid import GridOptionsBuilder, AgGrid
 import plotly.graph_objects as go
+from PIL import Image
 
 
 def displayWTI():
+    st.header("Raw Data")
     # select time interval
     interv = st.select_slider('Select Time Series Data Interval for Prediction', options=[
         'Daily', 'Weekly', 'Monthly'], value='Weekly')
@@ -120,6 +123,25 @@ def displayWTI():
             st.write("ARIMA Metrics")
             AgGrid(file, key='dailyMetric', width='100%', fit_columns_on_grid_load=True,
                    enable_enterprise_modules=True, theme='streamlit', gridOptions=page)
+
+    # # TABLES aaaaaaa
+    # sss = pd.read_csv('WTI/CopBook1.csv')
+    # st.table(sss)
+    st.header("Brent vs. WTI Accuracy Metrics & Best Models")
+
+    arima = Image.open('assets/images/ARIMA2.png')
+    # st.image(arima, caption='Table of Comparisons: ARIMA',
+    #          use_column_width='auto')
+
+    col1, col2, col3 = st.columns([1, 6, 1])
+
+    with col2:
+        arima = Image.open('assets/images/ARIMA2.png')
+        st.image(arima, caption='Table of Comparisons: ARIMA',
+                 use_column_width='auto')
+        lstm = Image.open('assets/images/LSTM2.png')
+        st.image(lstm, caption='Table of Comparisons: LSTM',
+                 use_column_width='auto')
 
     # MODEL OUTPUT TABLE
     st.header("Model Output (Close Prices vs. Predicted Prices)")

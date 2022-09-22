@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 
 
 def displayBrent():
+    st.header("Raw Data")
     # select time interval
     interv = st.select_slider('Select Time Series Data Interval for Prediction', options=[
         'Daily', 'Weekly', 'Monthly', 'Quarterly'], value='Weekly')
