@@ -17,6 +17,7 @@ from keras import wrappers
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ModelCheckpoint
 from st_aggrid import GridOptionsBuilder, AgGrid
+from style import add_logo
 
 hide_menu_style = """
 <style>
@@ -28,7 +29,7 @@ footer{visibility:hidden;}
 st.set_page_config(page_title="Predicta.oil | Make a Model", layout='wide', page_icon="⛽")
 st.markdown(hide_menu_style, unsafe_allow_html=True)
 # ag grid pagination
-
+add_logo()
 
 def pagination(df):
     gb = GridOptionsBuilder.from_dataframe(df)
