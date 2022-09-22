@@ -1,5 +1,3 @@
-# TODO: add descriptions on how to use
-
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -8,6 +6,8 @@ import matplotlib.pyplot as plt
 # import numpy as np
 import plotly.express as px
 from st_aggrid import GridOptionsBuilder, AgGrid
+from style import add_logo
+
 hide_menu_style = """
 <style>
 #MainMenu{visibility: hidden;}
@@ -15,14 +15,15 @@ footer{visibility:hidden;}
 </style>
 """
 # page expands to full width
-st.set_page_config(page_title="Predicta.oil | Explore", layout='wide', page_icon="⛽")
+st.set_page_config(page_title="Predicta.oil | Explore",
+                   layout='wide', page_icon="⛽")
 st.markdown(hide_menu_style, unsafe_allow_html=True)
 st.title("Explore Models")
-
+add_logo()
 # ARIMA
 # slider interval
 interv = st.select_slider('Select Time Series Data Interval for Prediction', options=[
-                          'Weekly', 'Monthly', 'Quarterly', 'Daily'], value='Weekly')
+                          'Daily', 'Weekly', 'Monthly', 'Quarterly'], value='Weekly')
 
 # dropdown 50 60 80
 st.write("Select Split")

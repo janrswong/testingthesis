@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image
 import base64
-
+from style import add_logo
 # function play gif
 
 
@@ -31,8 +31,8 @@ footer{visibility:hidden;}
 # page expands to full width
 st.set_page_config(page_title="Predicta.oil | About", layout='wide', page_icon="⛽")
 st.markdown(hide_menu_style, unsafe_allow_html=True)
+add_logo()
 st.title('About the Research')
-
 # a. how the thing works
 st.header('How It Works')
 st.markdown('<strong>Welcome!</strong> This is a fully interactive, multi-page web app through the Python library Streamlit that allows users to explore the same models used in the study. Aside from learning about study findings, play with parameters, create your own models, conduct your own comparisions and make your own analyses! Read further to learn how to use the <em>Explore</em> and <em>Make Your Own Model</em> tabs.', unsafe_allow_html=True)
